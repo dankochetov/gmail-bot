@@ -1,5 +1,5 @@
 export type EnvVarName =
-    | 'DB_URL'
+    | 'DATABASE_URL'
     | 'GOOGLE_CLIENT_ID'
     | 'GOOGLE_CLIENT_SECRET'
     | 'PORT';

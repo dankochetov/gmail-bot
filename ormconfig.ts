@@ -36,7 +36,7 @@ if (requireMigration) {
 
 const config: PostgresConnectionOptions = {
     type: 'postgres',
-    url: EnvService.getEnvVar('DB_URL'),
+    url: EnvService.getEnvVar('DATABASE_URL'),
     cli: {
         migrationsDir: 'src/server/migrations',
     },
