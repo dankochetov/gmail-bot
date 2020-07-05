@@ -12,7 +12,7 @@
     "build:server": "rimraf dist && nest build",
     "start:server": "dotenv -- ts-node -r tsconfig-paths/register node_modules/@nestjs/cli/bin/nest build --webpack --webpackPath webpack.server.config.ts",
     "start:server:debug": "nest start --debug --watch",
-    "start:server:prod": "node dist/main",
+    "start:server:prod": "node dist/src/server/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\""
   },
   "dependencies": {

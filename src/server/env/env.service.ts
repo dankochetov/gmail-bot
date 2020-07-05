@@ -1,4 +1,8 @@
-export type EnvVarName = 'DB_URL' | 'GOOGLE_CLIENT_ID' | 'GOOGLE_CLIENT_SECRET';
+export type EnvVarName =
+    | 'DB_URL'
+    | 'GOOGLE_CLIENT_ID'
+    | 'GOOGLE_CLIENT_SECRET'
+    | 'PORT';
 
 export type EnvFlagName = never;
 
