@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "noImplicitReturns": true,
+    "isolatedModules": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "removeComments": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "typeRoots": [
+      "src/@types",
+      "node_modules/@types"
+    ]
+  },
+}
