@@ -2,6 +2,7 @@ FROM node:10-alpine AS builder
 WORKDIR /usr/src/app
 COPY package.json ./
 COPY yarn.lock ./
+COPY .yarnclean ./
 RUN yarn install
 COPY . .
 RUN yarn build:server

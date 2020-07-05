@@ -1,4 +1,4 @@
-.env.old
+.env
 node_modules
 dist
 service-key.json
