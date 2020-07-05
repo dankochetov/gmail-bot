@@ -15,5 +15,5 @@ COPY .yarnclean ./
 RUN yarn install
 COPY . .
 COPY --from=builder /usr/src/app/dist ./dist
-CMD "sh \"yarn build:ui && yarn start:server:prod\""
+CMD "sh -с \"yarn build:ui && yarn start:server:prod\""
 EXPOSE 3000
