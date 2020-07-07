@@ -33,6 +33,7 @@ import { Status } from '@/server/email-delivery/email-delivery.entity';
 import type { DeliveryResponse, FetchDelivery } from '@/ui/components/TabsRoot';
 import useRequest, { State as RequestState } from '@/ui/hooks/useRequest';
 import { usePrev } from '@/ui/hooks/usePrev';
+import BulkAddRecipientsModal from '@/ui/components/BulkAddRecipientsModal';
 
 interface Props {
     delivery: RequestState<DeliveryResponse>;
@@ -90,6 +91,22 @@ const SendingSetup: React.FC<Props> = ({
         [setRecipientsList],
     );
 
+    const addBulkRecipients = useCallback(
+        (recipients: string[]) => {
+            setRecipientsList((list) =>
+                produce(list, (draftList) => {
+                    draftList.push(
+                        ...recipients.map((r) => ({
+                            id: uuid(),
+                            value: r,
+                        })),
+                    );
+                }),
+            );
+        },
+        [setRecipientsList],
+    );
+
     const latestRecipient = useRef<Input<HTMLInputElement> | null>(null);
     const handleRecipientChange = useCallback(
         (i: number) => ({
@@ -103,6 +120,14 @@ const SendingSetup: React.FC<Props> = ({
         },
         [setRecipientsList],
     );
+
+    const [
+        isBulkRecipientsModalOpened,
+        setBulkRecipientsModalOpened,
+    ] = useState(false);
+    const toggleBulkRecipientsModalOpened = useCallback(() => {
+        setBulkRecipientsModalOpened((f) => !f);
+    }, [setBulkRecipientsModalOpened]);
 
     const submitBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -279,8 +304,18 @@ const SendingSetup: React.FC<Props> = ({
             )}
             <FormGroup row>
                 <Col sm={{ size: 10, offset: 2 }}>
-                    <Button color='info' onClick={addRecipient}>
+                    <Button
+                        color='info'
+                        className='mr-3'
+                        onClick={addRecipient}
+                    >
                         Add recipient
+                    </Button>
+                    <Button
+                        color='info'
+                        onClick={toggleBulkRecipientsModalOpened}
+                    >
+                        Bulk add recipients
                     </Button>
                     <Button
                         className='float-right'
@@ -310,10 +345,11 @@ const SendingSetup: React.FC<Props> = ({
                         )}
                     </Button>
                     {!!formValidationErrors.length && submitBtnRef.current && (
-                        <UncontrolledTooltip
+                        <ValidationErrorTooltip
                             target={submitBtnRef.current}
                             trigger='hover'
                             placement='top'
+                            autohide={false}
                         >
                             <ul>
                                 {formValidationErrors.reduce<React.ReactNode>(
@@ -329,16 +365,38 @@ const SendingSetup: React.FC<Props> = ({
                                     null,
                                 )}
                             </ul>
-                        </UncontrolledTooltip>
+                        </ValidationErrorTooltip>
                     )}
                 </Col>
             </FormGroup>
+
+            <BulkAddRecipientsModal
+                isOpened={isBulkRecipientsModalOpened}
+                toggle={toggleBulkRecipientsModalOpened}
+                onDone={addBulkRecipients}
+            />
         </Form>
     );
 };
 
 const Form = styled(DefaultForm)`
     margin-bottom: 60px;
+`;
+
+const ValidationErrorTooltip = styled(UncontrolledTooltip)`
+    .tooltip {
+        white-space: nowrap;
+    }
+
+    .tooltip-inner {
+        text-align: left;
+        max-width: none;
+    }
+
+    ul {
+        padding-inline-start: 0;
+        list-style-type: none;
+    }
 `;
 
 export default SendingSetup;

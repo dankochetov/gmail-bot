@@ -28,8 +28,6 @@ export type FetchDelivery = ReturnType<typeof useRequest>['perform'];
 const TabsRoot: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'setup' | 'progress'>('setup');
 
-    type FetchDelivery = typeof fetchDelivery;
-
     const { state: delivery, perform: fetchDelivery } = useRequest<
         DeliveryResponse
     >({
