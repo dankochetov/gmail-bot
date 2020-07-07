@@ -15,7 +15,6 @@ const config: Configuration = {
     context: srcPath,
     output: {
         path: outPath,
-        publicPath: '/ui',
     },
     devtool: 'inline-source-map',
     devServer: {

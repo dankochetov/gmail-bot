@@ -16,7 +16,9 @@ function config(options: Configuration): Configuration {
         ],
         plugins: [
             ...(options.plugins ?? []),
-            new CleanWebpackPlugin(),
+            new CleanWebpackPlugin({
+                cleanStaleWebpackAssets: false,
+            }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
             new StartServerWebpackPlugin({
