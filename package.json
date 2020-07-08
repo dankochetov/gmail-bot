@@ -14,7 +14,7 @@
     "build:server": "yarn nest build",
     "start:server": "yarn nest start",
     "start:server:debug": "yarn nest start --debug --watch",
-    "start:server:prod": "node dist/src/server/main",
+    "start:server:prod": "node dist/server/main",
     "start:server:deployed": "yarn build:ui && yarn start:server:prod",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\""
   },
