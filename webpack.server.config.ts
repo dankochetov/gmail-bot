@@ -1,28 +1,16 @@
-import webpack, { Configuration } from 'webpack';
+import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import StartServerWebpackPlugin from 'start-server-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 
 function config(options: Configuration): Configuration {
     return {
         ...options,
-        entry: ['webpack/hot/poll?100', options.entry as string],
-        watch: true,
-        externals: [
-            nodeExternals({
-                whitelist: ['webpack/hot/poll?100'],
-            }),
-        ],
+        externals: [nodeExternals()],
         plugins: [
             ...(options.plugins ?? []),
             new CleanWebpackPlugin({
                 cleanStaleWebpackAssets: false,
-            }),
-            new webpack.HotModuleReplacementPlugin(),
-            new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
-            new StartServerWebpackPlugin({
-                name: options.output!.filename as string,
             }),
         ],
         optimization: {

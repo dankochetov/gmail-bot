@@ -32,7 +32,7 @@ export default class EmailDeliveryRepository extends Repository<EmailDelivery> {
 
     async getById(
         id: EmailDelivery['id'],
-        { manager }: { manager?: EntityManager },
+        { manager }: { manager?: EntityManager } = {},
     ): Promise<EmailDelivery> {
         return (manager ?? getManager()).findOneOrFail(EmailDelivery, id);
     }

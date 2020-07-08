@@ -65,6 +65,37 @@ const SendingSetup: React.FC<Props> = ({
         [setContentRaw],
     );
 
+    const [deliveryIntervalFrom, setDeliveryIntervalFromRaw] = useState(5);
+    const [deliveryIntervalTo, setDeliveryIntervalToRaw] = useState(10);
+    const setDeliveryIntervalFrom = useCallback(
+        ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+            const numValue = +value;
+            setDeliveryIntervalFromRaw(numValue);
+            if (numValue > deliveryIntervalTo) {
+                setDeliveryIntervalToRaw(numValue);
+            }
+        },
+        [
+            setDeliveryIntervalFromRaw,
+            deliveryIntervalTo,
+            setDeliveryIntervalToRaw,
+        ],
+    );
+    const setDeliveryIntervalTo = useCallback(
+        ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+            const numValue = +value;
+            setDeliveryIntervalToRaw(numValue);
+            if (numValue < deliveryIntervalFrom) {
+                setDeliveryIntervalFromRaw(numValue);
+            }
+        },
+        [
+            setDeliveryIntervalToRaw,
+            deliveryIntervalFrom,
+            setDeliveryIntervalFromRaw,
+        ],
+    );
+
     const [recipientsList, setRecipientsList] = useState<
         { id: string; value: string }[]
     >([]);
@@ -173,6 +204,14 @@ const SendingSetup: React.FC<Props> = ({
             errors.push(`Text is empty`);
         }
 
+        if (deliveryIntervalFrom < 1) {
+            errors.push(`Delivery interval lower bound must be at least 1`);
+        }
+
+        if (deliveryIntervalTo < 1) {
+            errors.push(`Delivery interval upper bound must be at least 1`);
+        }
+
         if (!recipientsList.length) {
             errors.push(`Recipient list is empty`);
         }
@@ -184,7 +223,15 @@ const SendingSetup: React.FC<Props> = ({
         });
 
         return errors;
-    }, [delivery, alias, subject, content, recipientsList]);
+    }, [
+        delivery,
+        alias,
+        subject,
+        content,
+        deliveryIntervalFrom,
+        deliveryIntervalTo,
+        recipientsList,
+    ]);
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -196,6 +243,10 @@ const SendingSetup: React.FC<Props> = ({
             to: recipientsList.map((r) => r.value),
             subject,
             text: content,
+            deliveryInterval: {
+                from: deliveryIntervalFrom,
+                to: deliveryIntervalTo,
+            },
         });
     };
 
@@ -271,6 +322,50 @@ const SendingSetup: React.FC<Props> = ({
                         onChange={setContent}
                         rows={10}
                     />
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Label sm={2}>Delivery interval</Label>
+                <Col sm={4}>
+                    <InputGroup>
+                        <Input
+                            type='number'
+                            min={1}
+                            value={deliveryIntervalFrom}
+                            onChange={setDeliveryIntervalFrom}
+                        />
+                        <InputGroupAddon addonType='append'>
+                            <InputGroupText>
+                                {deliveryIntervalFrom > 1 ? (
+                                    <>minutes</>
+                                ) : (
+                                    <>minute</>
+                                )}
+                            </InputGroupText>
+                        </InputGroupAddon>
+                    </InputGroup>
+                </Col>
+                <Label sm={2} className='text-center'>
+                    to
+                </Label>
+                <Col sm={4}>
+                    <InputGroup>
+                        <Input
+                            type='number'
+                            min={1}
+                            value={deliveryIntervalTo}
+                            onChange={setDeliveryIntervalTo}
+                        />
+                        <InputGroupAddon addonType='append'>
+                            <InputGroupText>
+                                {deliveryIntervalTo > 1 ? (
+                                    <>minutes</>
+                                ) : (
+                                    <>minute</>
+                                )}
+                            </InputGroupText>
+                        </InputGroupAddon>
+                    </InputGroup>
                 </Col>
             </FormGroup>
             {!!recipientsList.length && (

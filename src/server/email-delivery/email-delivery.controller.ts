@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 
+import { DeliveryResponse } from '@/ui/components/TabsRoot';
 import { AuthService } from '@/server/auth/auth.service';
-import GoogleIdTokenGuard from '../auth/google-id-token.guard';
+import GoogleIdTokenGuard from '@/server/auth/google-id-token.guard';
 import { EmailDeliveryService } from './email-delivery.service';
 import EmailDeliveryRepository from './email-delivery.repository';
-import { DeliveryResponse } from '../../ui/components/TabsRoot';
 
 @Controller('email-delivery')
 export class EmailDeliveryController {
@@ -34,11 +34,16 @@ export class EmailDeliveryController {
             to,
             subject,
             text,
+            deliveryInterval,
         }: {
             from: string;
             to: string[];
             subject: string;
             text: string;
+            deliveryInterval: {
+                from: number;
+                to: number;
+            };
         },
     ): Promise<DeliveryResponse> {
         const delivery = await this.emailDeliveryService.createOne({
@@ -47,6 +52,7 @@ export class EmailDeliveryController {
             recipients: to,
             subject,
             text,
+            deliveryInterval,
             authService: this.authService,
         });
 

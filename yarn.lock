@@ -1966,13 +1966,6 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
 
-"@types/start-server-webpack-plugin@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/start-server-webpack-plugin/-/start-server-webpack-plugin-2.2.0.tgz#a7c4595c715eda083d92ca1ea184d97db3d8fc7b"
-  integrity sha512-TFiZWMPuiMR/utvjk6ENi0HPtQl38HnPMYfJqm04ztpzITHzTCXt7T7LyXnP9eTwg4lLQkmRUaFy04iEyjoJmw==
-  dependencies:
-    "@types/webpack" "*"
-
 "@types/styled-components@^5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.0.tgz#24d3412ba5395aa06e14fbc93c52f9454cebd0d6"
@@ -9565,11 +9558,6 @@ stack-utils@^2.0.2:
   integrity sha512-0H7QK2ECz3fyZMzQ8rH0j2ykpfbnd20BFtfg/SqVC2+sCTtcw0aDTGB7dk+de4U4uUeuz6nOtJcrkFFLG1B0Rg==
   dependencies:
     escape-string-regexp "^2.0.0"
-
-start-server-webpack-plugin@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/start-server-webpack-plugin/-/start-server-webpack-plugin-2.2.5.tgz#4a2838759b0f36acd11b0b2f5f196f289ae29d31"
-  integrity sha512-DRCkciwCJoCFZ+wt3wWMkR1M2mpVhJbUKFXqhK3FWyIUKYb42NnocH5sMwqgo+nPNHupqNwK/v8lgfBbr2NKdg==
 
 static-extend@^0.1.1:
   version "0.1.2"

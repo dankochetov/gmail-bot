@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import MailComposer from 'nodemailer/lib/mail-composer';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 
 import EmailDeliveryRepository from './email-delivery.repository';
 import EmailDelivery, { Status } from './email-delivery.entity';
@@ -27,7 +27,7 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
     emailDeliveryRecipientRepository!: Repository<EmailDeliveryRecipient>;
 
     private deliveryIntervalMap: {
-        [deliveryId: string]: ReturnType<typeof setInterval>;
+        [deliveryId: string]: boolean;
     } = {};
 
     async onApplicationBootstrap() {
@@ -90,7 +90,7 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
             }
 
             if (toIndex === -1 || toIndex === recipients.length - 1) {
-                clearInterval(this.deliveryIntervalMap[deliveryId]);
+                this.deliveryIntervalMap[deliveryId] = false;
 
                 if (toIndex === recipients.length - 1) {
                     await manager.update(
@@ -98,6 +98,11 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
                         { id: deliveryId },
                         { status: Status.COMPLETED },
                     );
+
+                    await manager.delete(EmailDelivery, {
+                        created_by: delivery.created_by,
+                        id: Not(deliveryId),
+                    });
                 }
 
                 if (toIndex === -1) {
@@ -132,28 +137,38 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
         );
     }
 
-    scheduleDelivery({
+    async scheduleDelivery({
         deliveryId,
         tokens,
     }: {
         deliveryId: EmailDelivery['id'];
         tokens: NonNullable<User['google_tokens']>;
-    }): void {
+    }): Promise<void> {
         if (this.deliveryIntervalMap[deliveryId]) {
             throw new Error(`Delivery ${deliveryId} is already scheduled`);
         }
 
-        const onIntervalTick = () => {
-            this.sendScheduledEmail({ deliveryId, tokens }).catch((e) => {
+        const delivery = await this.emailDeliveryRepository.getById(deliveryId);
+
+        this.deliveryIntervalMap[deliveryId] = true;
+
+        (function onTimeout(self) {
+            (async () => {
+                await self.sendScheduledEmail({ deliveryId, tokens });
+
+                if (self.deliveryIntervalMap[deliveryId]) {
+                    setTimeout(
+                        () => onTimeout(self),
+                        Math.random() *
+                            (delivery.delivery_interval_to * 1000 * 60 -
+                                delivery.delivery_interval_from * 1000 * 60) +
+                            delivery.delivery_interval_from * 1000 * 60,
+                    );
+                }
+            })().catch((e) => {
                 console.error(e);
             });
-        };
-
-        this.deliveryIntervalMap[deliveryId] = setInterval(
-            onIntervalTick,
-            1_000 * 60,
-        );
-        onIntervalTick();
+        })(this);
     }
 
     async rescheduleExistingDeliveries() {
@@ -169,7 +184,7 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
                     );
                     return;
                 }
-                this.scheduleDelivery({
+                await this.scheduleDelivery({
                     deliveryId: d.id,
                     tokens: user.google_tokens,
                 });
@@ -184,6 +199,7 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
         subject,
         text,
         authService,
+        deliveryInterval,
     }: {
         userId: User['id'];
         sender: string;
@@ -191,6 +207,10 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
         subject: string;
         text: string;
         authService: AuthService;
+        deliveryInterval: {
+            from: number;
+            to: number;
+        };
     }) {
         const latestDelivery = await this.emailDeliveryRepository.getLatestForUser(
             { userId },
@@ -204,6 +224,8 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
             sender,
             subject,
             content: text,
+            delivery_interval_from: deliveryInterval.from,
+            delivery_interval_to: deliveryInterval.to,
         });
 
         await this.emailDeliveryRepository.save(delivery);
@@ -218,7 +240,7 @@ export class EmailDeliveryService implements OnApplicationBootstrap {
 
         await this.emailDeliveryRecipientRepository.save(recipientEntities);
 
-        this.scheduleDelivery({
+        await this.scheduleDelivery({
             deliveryId: delivery.id,
             tokens: authService.tokens,
         });

@@ -13,11 +13,11 @@ export class EmailDeliveryInit1593870483285 implements MigrationInterface {
         await queryRunner.query(`
             create table email_deliveries
             (
-                id         uuid            default uuid_generate_v4(),
+                id         uuid               default uuid_generate_v4(),
                 created_by text      not null,
                 created_at timestamp not null default current_timestamp,
                 sender     text      not null,
-                status     delivery_status default 'in_progress',
+                status     delivery_status    default 'in_progress',
                 subject    text      not null,
                 content    text      not null,
 
@@ -26,6 +26,8 @@ export class EmailDeliveryInit1593870483285 implements MigrationInterface {
 
                 constraint email_deliveries__created_by
                     foreign key (created_by) references users (id)
+                        on update cascade
+                        on delete cascade
             )
         `);
 
@@ -42,6 +44,8 @@ export class EmailDeliveryInit1593870483285 implements MigrationInterface {
                     primary key (id),
                 constraint email_delivery_recipients__email_delivery_id
                     foreign key (email_delivery_id) references email_deliveries (id)
+                        on update cascade
+                        on delete cascade
             )
         `);
     }

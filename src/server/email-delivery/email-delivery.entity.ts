@@ -49,4 +49,10 @@ export default class EmailDelivery {
 
     @Column('text')
     content!: string;
+
+    @Column('int')
+    delivery_interval_from!: number;
+
+    @Column('int')
+    delivery_interval_to!: number;
 }
