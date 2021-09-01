@@ -5760,22 +5760,17 @@ ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-immer-reducer@^0.7.10:
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/immer-reducer/-/immer-reducer-0.7.10.tgz#54d620ab6f9bc5bf0c9c0a985e063cda4c6aa7fa"
-  integrity sha512-X1TgUJbgywhArPBoG+IO+6n703+MD+oC+FYSSlkFaqCPrIXQyJUFjQd1hzysWXPJ5/LdAT4UyaYAetLpmqMVyQ==
+immer-reducer@^0.7.11:
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/immer-reducer/-/immer-reducer-0.7.13.tgz#0d339c0d888c5d9335ff00856c417cf99efc2312"
+  integrity sha512-zEnDPMaLxd+iOnTX/D06DHp6Vhw4ky28PjA4qC0ETzDzLu6SBp6asR4pkqZ28PB3rZ29BY6iRUrcqBfrbaLYeA==
   dependencies:
-    immer "^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0"
+    immer "^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0 || ^9.0.0"
 
-"immer@^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0":
-  version "5.3.6"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-5.3.6.tgz#51eab8cbbeb13075fe2244250f221598818cac04"
-  integrity sha512-pqWQ6ozVfNOUDjrLfm4Pt7q4Q12cGw2HUZgry4Q5+Myxu9nmHRkWBpI0J4+MK0AxbdFtdMTwEGVl7Vd+vEiK+A==
-
-immer@^7.0.5:
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-7.0.5.tgz#8af347db5b60b40af8ae7baf1784ea4d35b5208e"
-  integrity sha512-TtRAKZyuqld2eYjvWgXISLJ0ZlOl1OOTzRmrmiY8SlB0dnAhZ1OiykIDL5KDFNaPHDXiLfGQFNJGtet8z8AEmg==
+"immer@^1.4.0 || ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^8.0.0 || ^9.0.0", immer@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.6.tgz#7a96bf2674d06c8143e327cbf73539388ddf1a73"
+  integrity sha512-G95ivKpy+EvVAnAab4fVa4YGYn24J1SpEktnJX7JJ45Bd7xqME/SCplFzYFmTbrkwZbQ4xJK1xMTUYBkN6pWsQ==
 
 import-fresh@^3.0.0, import-fresh@^3.1.0:
   version "3.2.1"
