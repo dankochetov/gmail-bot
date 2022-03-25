@@ -16,7 +16,9 @@
     "start:server:debug": "yarn nest start --debug --watch",
     "start:server:prod": "node dist/server/main",
     "start:server:deployed": "yarn build:ui && yarn start:server:prod",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\""
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts{,x}\"",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
@@ -38,7 +40,7 @@
     "googleapis": "^52.1.0",
     "immer": "^7.0.5",
     "immer-reducer": "^0.7.10",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "nodemailer": "^6.4.10",
     "passport": "^0.4.1",
@@ -59,7 +61,8 @@
     "ts-toolbelt": "^6.9.9",
     "typeorm": "^0.2.25",
     "uuid": "^8.2.0",
-    "validator": "^13.1.1"
+    "validator": "^13.1.1",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -151,5 +154,6 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "snyk": true
 }
